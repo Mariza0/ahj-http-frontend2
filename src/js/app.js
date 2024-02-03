@@ -1,63 +1,43 @@
-const subscribeWidget = document.querySelector('.subscribe');
-const subscribeForm = subscribeWidget.querySelector('.subscribe-form');
-const nameInput = subscribeWidget.querySelector('.name');
-const phoneInput = subscribeWidget.querySelector('.phone');
-const unsubscribeBtn = subscribeWidget.querySelector('.unsubscribe-btn');
+import "./tickets";
+import "./popup";
+import { createTickets } from "./tickets";
+import "./form";
 
-subscribeForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const body = new FormData(subscribeForm);
-
+// запрашиваем сервер на наличие новых тикетов
+export function checkTickets() {
+  console.log("запрос на сервер");
   const xhr = new XMLHttpRequest();
 
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState !== 4) return;
+  const loadingIndicator = document.querySelector(".loading-indicator");
+  loadingIndicator.style.display = "flex";
 
-  }
+  xhr.open("GET", "http://localhost:7070?method=allTickets");
 
-  xhr.open('POST', 'http://localhost:7070');
-  // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhr.send(body);
-});
+  xhr.addEventListener("load", () => {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      try {
+        // Скрыть индикатор загрузки
+        loadingIndicator.style.display = "none";
 
-unsubscribeBtn.addEventListener('click', (e) => {
-  e.preventDefault();
+        const data = JSON.parse(xhr.responseText);
 
-  const body = new FormData(subscribeForm);//Array.from(subscribeForm.elements)
-  //   .filter(({ name}) => name)
-  //   .map(({ name, value}) => `${name}=${encodeURIComponent(value)}`)
-  //   .join('&');
+        // отрисовываем тикеты
+        createFormTickets(data);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  });
 
-  const xhr = new XMLHttpRequest();
-
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState !== 4) return;
-
-    console.log(xhr.responseText);
-  }
-
-  xhr.open('DELETE', 'http://localhost:7070/?' + body);
-  // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   xhr.send();
-});
+}
 
-const uploadForm = document.querySelector('.upload-form');
+setInterval(checkTickets, 5000);
 
+// передача тикетов на форму в браузер
 
-uploadForm.addEventListener('submit', (e) => {
-
-  e.preventDefault();
-
-  const body = new FormData(uploadForm);
-
-  const xhr = new XMLHttpRequest();
-
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState !== 4) return;
+function createFormTickets(jsonMassive) {
+  for (const item of jsonMassive) {
+    createTickets(item);
   }
-
-  xhr.open('POST', 'http://localhost:7070/upload');
-  // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhr.send(body);
-});
+}

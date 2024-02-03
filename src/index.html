@@ -5,23 +5,97 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <title>Document</title>
 </head>
 
 <body>
-  <div class="subscribe">
-    <form class="subscribe-form" method="POST" action="http://localhost:7070">
-      <input class="name" name="name" class="input" required>
-      <input class="phone" name="phone" class="input" required>
-      <button class="btn">Записаться</button>
-      <button class="unsubscribe-btn">Отписаться</button>
-    </form>
-  </div>
+
+  <!-- <div id="loading-indicator">
+    <img src="./img/loading.svg" alt="Loading..." />
+  </div> -->
   
-  <form class="upload-form">
-    <input type="file" name="file" accept="image/*">
-    <input type="text" name="name" value="My Photo">
-    <button>Upload</button>
+  <div class="container ml-5 mt-5">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      
+      <button type="button" class="btn popup btn-primary btn-lg btn-warning ml-auto mb-2">Ticket</button>
+    </div>
+    <div class="loading-indicator">
+      <img src="./img/rings.svg" width="300">
+  </div>
+    
+    <ul class="list-group">
+
+    </ul>
+   
+  </div>
+
+  <!-- popup create-->
+  <form class="popup-ticket">
+    <div class="popup-content">
+    <div class="form-group">
+      <button class="btn closePopup">&times;</button>
+      <div class="form-group" style="text-align: center">
+        <p class="name-popup">Создание тикета</p>
+      </div>
+      <label for="name">краткое описание</label>
+      <input type="text" class="input-class" id="name" name="name" maxlength="50"></label>
+    </div>
+    <div class="form-group">
+      <label for="description">подробное описание</label>
+      <textarea id="description" class="description-popup" name="description"></textarea>
+    </div>
+    <!-- <div class="form-group"> -->
+      <!-- <label for="creationDate">дата создания</label> -->
+      <input type="hidden" class ="creation-date" name="creationDate" id="creationDate" value="" readonly>
+      <input type="hidden" class ="statusTicket" name="statusTicket" id="statusTicket" value="" readonly>
+    <!-- </div> -->
+    <div class="form-group_last">
+      <button class="btn-cancel btn btn-outline-danger">отмена</button>
+      <button type="submit" class="btn btn-create_ticket btn-outline-success">ok</button>
+    </div>
+  </div>
+  </form>
+  <!-- popup change-->
+  <form class="popup-ticket_change">
+    <div class="popup-content">
+    <div class="form-group">
+      <button class="btn closePopup">&times;</button>
+      <div class="form-group" style="text-align: center">
+        <p class="name-popup">Изменение тикета</p>
+      </div>
+      <label for="name">краткое описание</label>
+      <input type="text" class="input-class" id="name" name="name" maxlength="50"></label>
+    </div>
+    <div class="form-group">
+      <label for="description">подробное описание</label>
+      <textarea id="description" class="description-popup" name="description"></textarea>
+    </div>
+    <!-- <div class="form-group"> -->
+      <!-- <label for="creationDate">дата создания</label> -->
+      <input type="hidden" class ="creation-date" name="creationDate" id="creationDate" value="" readonly>
+      <input type="hidden" class ="statusTicket" name="statusTicket" id="statusTicket" value="" readonly>
+    <!-- </div> -->
+    <div class="form-group_last">
+      <button class="btn-cancel btn btn-outline-danger">отмена</button>
+      <button type="submit" class="btn btn-change_ticket btn-outline-success">ok</button>
+    </div>
+  </div>
+  </form>
+  <!-- popup delete ticket -->
+  <form class="popup-delete">
+    <div class="popup_delete-content">
+    <div class="form-group">
+      <p>удаление тикета</p>
+      <p>Вы уверены, что хотите удалить тикет?<br>Это действие необратимо.</p>
+    </div>
+    <div class="form-group_last">
+      <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end"> -->
+      <button class="btn btn-cancel btn-outline-success">отмена</button>
+      <button type="submit" class="btn-delete btn btn-outline-danger">ok</button>  
+      <!-- </div>  -->
+    </div>
+  </div>
   </form>
 
 </body>
