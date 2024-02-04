@@ -1,4 +1,4 @@
-![Build status](https://ci.appveyor.com/api/projects/status/f7x010nvcqgc9d2x?svg=true)](https://ci.appveyor.com/project/Mariza0/ahj-http-frontend)пше
+![Build status](https://ci.appveyor.com/api/projects/status/f7x010nvcqgc9d2x?svg=true)]
 
 
 # Домашнее задание к занятию "7. Работа с HTTP"
