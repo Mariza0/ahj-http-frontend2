@@ -20,8 +20,11 @@ export function checkTickets() {
     if (xhr.status >= 200 && xhr.status < 300) {
       try {
         // Скрыть индикатор загрузки
-        loadingIndicator.style.display = "none";
-        isFirstLoad = false;
+        if (isFirstLoad) {
+          const loadingIndicator = document.querySelector(".loading-indicator");
+          loadingIndicator.style.display = "none";
+          isFirstLoad = false; // Устанавливаем флаг как false после первой загрузки
+        }
 
         const data = JSON.parse(xhr.responseText);
 
