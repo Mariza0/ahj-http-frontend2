@@ -1,6 +1,6 @@
 ![Build status](https://ci.appveyor.com/api/projects/status/f7x010nvcqgc9d2x?svg=true)
 
-![Ссылка на проект](https://mariza0.github.io/ahj-http-frontend)
+[Ссылка на проект](https://mariza0.github.io/ahj-http-frontend)
 
 # Домашнее задание к занятию "7. Работа с HTTP"
 
