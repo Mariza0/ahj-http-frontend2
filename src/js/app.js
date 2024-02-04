@@ -2,14 +2,17 @@ import "./tickets";
 import "./popup";
 import { createTickets } from "./tickets";
 import "./form";
+let isFirstLoad = true;
 
 // запрашиваем сервер на наличие новых тикетов
 export function checkTickets() {
   console.log("запрос на сервер");
   const xhr = new XMLHttpRequest();
 
+  if (isFirstLoad) {
   const loadingIndicator = document.querySelector(".loading-indicator");
   loadingIndicator.style.display = "flex";
+  }
 
   xhr.open("GET", "http://localhost:7070?method=allTickets");
 
@@ -18,6 +21,7 @@ export function checkTickets() {
       try {
         // Скрыть индикатор загрузки
         loadingIndicator.style.display = "none";
+        isFirstLoad = false;
 
         const data = JSON.parse(xhr.responseText);
 
