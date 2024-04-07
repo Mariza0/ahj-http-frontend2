@@ -156,3 +156,9 @@ textarea {
  
 }
 
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+
+}
+
