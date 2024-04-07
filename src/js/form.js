@@ -1,23 +1,11 @@
 const popup = document.querySelector(".popup-delete");
 import { checkTickets } from "./app";
-const formChange = document.querySelector(".popup-ticket_change");
 
-document.addEventListener("click", (event) => {
+const docListening = (event) => {
+
   const target = event.target;
-  // // открываем дополнительную информацию
-  // if (target.className === 'ticket-name') {
 
-  //     const description = target.querySelector('.description');
-
-  //     if (!description.classList.contains('disable')) {
-  //         description.classList.add('disable');
-  //         return;
-  //     }
-
-  //     description.classList.remove('disable');
-  // }
-
-  // удаляем тикет
+  // УДАЛЯЕМ ТИКЕТ
   if (target.classList.contains("btn_delete")) {
     const parent = target.closest(".list-group-item");
 
@@ -53,12 +41,15 @@ document.addEventListener("click", (event) => {
     });
   }
 
+
   // ИЗМЕНЯЕМ ТИКЕТ
   if (target.classList.contains("btn_change")) {
     console.log("нажимаем на кнопку изменить");
 
     const parent = target.closest(".list-group-item");
     console.log(parent, "parent");
+
+    let formChange = document.querySelector(".popup-ticket_change");
 
     const btnCancel = formChange.querySelector(".btn-cancel");
     // Закрываем окно при отмене
@@ -75,59 +66,82 @@ document.addEventListener("click", (event) => {
     });
 
     const closePopup = formChange.querySelector(".closePopup");
+
     // Закрываем всплывающее окно при клике на крестик
     closePopup.addEventListener("click", function (event) {
       event.preventDefault();
       formChange.style.display = "none";
     });
 
-    let nameTicketPopup = formChange.querySelector(".input-class");
-
-    let descriptionTicketPopup = formChange.querySelector(".description-popup");
-
-    const id = parent.querySelector(".ticket").getAttribute("data-ticket-id");
-
-    const nameValue = parent.querySelector(".ticket-name").textContent;
-    const descriptionValue = parent.querySelector(".description").textContent;
-
-    nameTicketPopup.value = nameValue;
-    descriptionTicketPopup.textContent = descriptionValue;
-
     formChange.style.display = "flex";
 
-    const hasChanges = () => {
-      return (
-        nameTicketPopup.value === nameValue &&
-        descriptionTicketPopup.textContent === descriptionValue
-      );
-    };
+      
+      const id = parent.querySelector(".ticket").getAttribute("data-ticket-id");
 
-    const handleFormSubmit = (e) => {
-      e.preventDefault();
+      let nameTicketPopup = formChange.querySelector(".input-class");
+      // берем значение краткого отписания
+      nameTicketPopup.value = parent.querySelector(".ticket-name").textContent;
+      console.log(nameTicketPopup, 'nameTicketPopup');
 
-      formChange.removeEventListener("submit", handleFormSubmit);
-
-      if (hasChanges()) {
-        console.log("Изменений нет, закрываем попап");
-        formChange.style.display = "none";
-        return;
-      }
-
-      const body = new FormData(formChange);
+      // получаем значение детального описания с сервера
+      let description;
 
       const xhr = new XMLHttpRequest();
+    xhr.open("GET", `http://localhost:7070?method=getDescription&id=${id}`);
+    // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-      xhr.open("POST", `http://localhost:7070?method=changeTicket&id=${id}`);
+    xhr.addEventListener("load", () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try {
+          description = xhr.responseText;
+          console.log('description',description);
 
-      xhr.send(body);
-      // обновляем список тикетов
-      checkTickets();
+          // устанавливаем значение детального отписания в попапе
+          let descriptionTicketPopup = formChange.querySelector(".description-popup");
+          descriptionTicketPopup.value = description;
 
-      formChange.style.display = "none";
-      return;
-    };
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    });
 
-    formChange.addEventListener("submit", handleFormSubmit);
+    xhr.send();
+
+    console.log('description',description)
+
+
+    const handleFormSubmit = (event) => {
+      event.preventDefault();
+
+      console.log(nameTicketPopup.value )
+      console.log(parent.querySelector(".ticket-name").textContent)
+
+      if ((nameTicketPopup.value !== parent.querySelector(".ticket-name").textContent) ||
+      (description !== formChange.querySelector(".description-popup").value)) {
+
+        const body = new FormData(formChange);
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("POST", `http://localhost:7070?method=changeTicket&id=${id}`);
+
+        xhr.send(body);
+
+        console.log('отправляем форму на сервер');
+
+        // обновляем список тикетов
+        console.log('обновляем список тикетов')
+        checkTickets();
+
+      }
+
+        formChange.style.display = "none";
+        formChange.removeEventListener("submit", handleFormSubmit)
+    }
+
+    // если отправляем форму на сервер
+    formChange.addEventListener("submit", handleFormSubmit)
   }
 
   // ПОЛУЧАЕМ Description
@@ -190,4 +204,9 @@ document.addEventListener("click", (event) => {
 
     return;
   }
-});
+
+}
+
+document.addEventListener("click", docListening);
+
+

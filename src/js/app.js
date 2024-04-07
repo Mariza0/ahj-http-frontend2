@@ -10,8 +10,8 @@ export function checkTickets() {
   const xhr = new XMLHttpRequest();
 
   if (isFirstLoad) {
-  const loadingIndicator = document.querySelector(".loading-indicator");
-  loadingIndicator.style.display = "flex";
+    const loadingIndicator = document.querySelector(".loading-indicator");
+    loadingIndicator.style.display = "flex";
   }
 
   xhr.open("GET", "http://localhost:7070?method=allTickets");

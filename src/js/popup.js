@@ -17,13 +17,6 @@ btnPopup.addEventListener("click", function () {
 ticketPopup.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  let nameValue = ticketPopup.querySelector(".input-class").value.trim();
-
-  if (nameValue === "") {
-    ticketPopup.style.display = "none";
-    return;
-  }
-
   // создаем http запрос для отправки данных формы на сервер
   const body = new FormData(ticketPopup);
 
@@ -33,9 +26,13 @@ ticketPopup.addEventListener("submit", (e) => {
 
   xhr.send(body);
 
+  ticketPopup.reset();
+
   // обновляем список тикетов
   console.log("отриосвываем тикеты");
   checkTickets();
+
+
 
   ticketPopup.style.display = "none";
   return;
